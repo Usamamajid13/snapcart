@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "527199235236",
+    "project_id": "snapcart-f4a9c",
+    "storage_bucket": "snapcart-f4a9c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527199235236:android:5af801e9749fd968924a31",
+        "android_client_info": {
+          "package_name": "com.usama.snapcart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527199235236-j94utpe9c198llqnf9op6f6smnrnea81.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.usama.snapcart",
+            "certificate_hash": "7243ad8844ff803271a79953f3f7fc5c50e71a9b"
+          }
+        },
+        {
+          "client_id": "527199235236-7bnkdcb2gppmll64de1am71hskq2ub03.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlSfnxcA0cPcWoBeL8xCh17f8Q18e3guQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527199235236-7bnkdcb2gppmll64de1am71hskq2ub03.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

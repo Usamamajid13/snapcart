@@ -9,6 +9,10 @@ import 'Authentication/sign_up_screen.dart';
 import 'Authentication/splash_screen.dart';
 import 'Constants/constants.dart';
 import 'MainScreen/home_screen.dart';
+import 'usman/privacy_screen.dart';
+import 'usman/terms_and_conditions_screen.dart';
+import 'usman/history_screen.dart';
+import 'usman/profile_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,14 +59,18 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Snapcart',
       debugShowCheckedModeBanner: false,
-      initialRoute: splashScreenRoute,
+      initialRoute: homeScreenRoute,
       builder: EasyLoading.init(),
       routes: {
-        splashScreenRoute: (context) => const SplashScreen(),
+        // splashScreenRoute: (context) => const SplashScreen(),
         loginScreenRoute: (context) => const LoginScreen(),
         forgotPasswordScreenRoute: (context) => const ForgotPasswordScreen(),
         signUpScreenRoute: (context) => const SignUpScreen(),
         homeScreenRoute: (context) => const HomeScreen(),
+        privacyScreenRoute: (context) => const PrivacyScreen(),
+        termsAndConditionsScreenRoute: (context) => const TermsAndConditions(),
+        historyScreenRoute: (context) => const HistoryScreen(),
+        profileScreenRoute: (context) => const ProfileScreen(),
       },
     );
   }

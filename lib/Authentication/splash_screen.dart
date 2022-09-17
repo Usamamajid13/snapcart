@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: Icon(
+        child: const Icon(
           Icons.qr_code,
           size: 100,
           color: purpleColor,

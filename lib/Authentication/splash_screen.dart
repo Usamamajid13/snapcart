@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:snapcart/Utils/app_utils.dart';
 
+import '../AuthController/auth_navigation_controller.dart';
 import '../Constants/constants.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -57,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   splashNavigator() {
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushNamed(context, catalogScreenRoute);
+      AuthController().checkUserExistence(context);
     });
   }
 }

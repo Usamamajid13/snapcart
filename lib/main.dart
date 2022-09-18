@@ -10,10 +10,10 @@ import 'Authentication/sign_up_screen.dart';
 import 'Authentication/splash_screen.dart';
 import 'Constants/constants.dart';
 import 'MainScreen/home_screen.dart';
-import 'usman/privacy_screen.dart';
-import 'usman/terms_and_conditions_screen.dart';
-import 'usman/history_screen.dart';
-import 'usman/profile_screen.dart';
+import 'DrawerScreens/privacy_screen.dart';
+import 'DrawerScreens/terms_and_conditions_screen.dart';
+import 'DrawerScreens/history_screen.dart';
+import 'DrawerScreens/profile_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

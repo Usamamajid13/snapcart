@@ -188,7 +188,9 @@ class _LoginScreenState extends State<LoginScreen> {
         .signIn(email: _email.toString(), password: _password.toString())
         .then((result) {
       if (result == null) {
-        Navigator.pushNamed(context, homeScreenRoute);
+        EasyLoading.showSuccess("Log In Successful");
+        Navigator.pushNamedAndRemoveUntil(
+            context, homeScreenRoute, (route) => false);
       }
     });
   }

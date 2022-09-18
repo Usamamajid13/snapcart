@@ -20,14 +20,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             height: 50,
             width: MediaQuery.of(context).size.width,
           ),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(left: 20.0),
-              child: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-                size: 30,
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.0),
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                  size: 30,
+                ),
               ),
             ),
           ),

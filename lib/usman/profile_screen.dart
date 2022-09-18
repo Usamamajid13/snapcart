@@ -20,10 +20,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             height: 50,
             width: MediaQuery.of(context).size.width,
           ),
-          Align(
+          const Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 20.0),
+              padding: EdgeInsets.only(left: 20.0),
               child: Icon(
                 Icons.arrow_back_ios,
                 color: Colors.white,
@@ -31,29 +31,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 80,
           ),
           Container(
             height: 120,
             width: 120,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
             ),
             child: Image.asset(
-              "asset/account.png",
+              "assets/account.png",
               scale: 5,
             ),
           ),
           const SizedBox(
             height: 60,
           ),
-          Text(
+          const Text(
             "USAMA MAJID",
             style: TextStyle(fontSize: 26, color: Colors.white),
           ),
-          SizedBox(
+          const SizedBox(
             height: 300,
           ),
           Container(
@@ -80,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Container(

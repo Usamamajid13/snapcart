@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:snapcart/Utils/app_utils.dart';
 
 import '../Constants/constants.dart';
 
@@ -11,6 +12,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var utils = AppUtils();
   @override
   void initState() {
     super.initState();
@@ -20,22 +22,42 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: const Icon(
-          Icons.qr_code,
-          size: 100,
-          color: purpleColor,
-        ),
+      backgroundColor: Colors.black,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            "assets/logo.png",
+            scale: 4,
+          ),
+          SizedBox(
+            height: 10,
+            width: MediaQuery.of(context).size.width,
+          ),
+          const Text(
+            "Snap Cart",
+            style: TextStyle(
+              color: purpleColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 40,
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            "Buy Scan And Save",
+            style: utils.mediumTitleTextStyle(color: purpleColor),
+          ),
+        ],
       ),
     );
   }
 
   splashNavigator() {
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushNamed(context, loginScreenRoute);
+      Navigator.pushNamed(context, catalogScreenRoute);
     });
   }
 }

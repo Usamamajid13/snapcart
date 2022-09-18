@@ -3,19 +3,59 @@ import 'package:snapcart/Constants/constants.dart';
 
 class AppUtils {
   largeLabelTextStyle({color}) {
-    return TextStyle(color: color, fontSize: 22, fontWeight: FontWeight.w600);
+    return TextStyle(
+      color: color,
+      fontSize: 22,
+      fontWeight: FontWeight.w600,
+    );
   }
 
   smallHeadingTextStyle({color}) {
-    return TextStyle(color: color, fontWeight: FontWeight.w700, fontSize: 14);
+    return TextStyle(
+      color: color,
+      fontWeight: FontWeight.w700,
+      fontSize: 14,
+    );
+  }
+
+  largeHeadingTextStyle({color}) {
+    return TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: color,
+    );
+  }
+
+  tileText(text) {
+    return Text(
+      text,
+      style: const TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+      ),
+    );
   }
 
   smallLableTextStyle({color}) {
-    return TextStyle(color: color, fontWeight: FontWeight.w500, fontSize: 14);
+    return TextStyle(
+      color: color,
+      fontWeight: FontWeight.w500,
+      fontSize: 14,
+    );
   }
 
   smallTitleTextStyle({color}) {
-    return TextStyle(color: color, fontSize: 14);
+    return TextStyle(
+      color: color,
+      fontSize: 14,
+    );
+  }
+
+  mediumTitleTextStyle({color}) {
+    return TextStyle(
+      fontSize: 15,
+      color: color,
+    );
   }
 
   bigButton(
@@ -43,13 +83,6 @@ class AppUtils {
               width: borderWidth == null ? 2 : borderWidth.toDouble()),
           borderRadius: BorderRadius.circular(borderRadius ?? 0),
           color: containerColor ?? Colors.white,
-          boxShadow: [
-            BoxShadow(
-              offset: const Offset(1, 3),
-              color: shadowColors ?? Colors.black.withOpacity(0.2),
-              blurRadius: 4,
-            )
-          ],
         ),
         child: Center(
           child: Text(
@@ -97,6 +130,9 @@ class AppUtils {
             // height: 40,
             child: TextFormField(
               onChanged: onChange,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
               validator: validator,
               controller: controller,
               obscureText: obscureText,

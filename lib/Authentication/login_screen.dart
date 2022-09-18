@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../AuthController/auth_controller.dart';
 import '../Constants/constants.dart';
@@ -17,19 +18,34 @@ class _LoginScreenState extends State<LoginScreen> {
   bool loginCheck = false;
   GlobalKey<FormState> globalFomKey = GlobalKey<FormState>();
   var utils = AppUtils();
-  bool _isLoading = false;
   String? _email;
   String? _password;
+  @override
+  void dispose() {
+    EasyLoading.dismiss();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Form(
         key: globalFomKey,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              const SizedBox(
+                height: 100,
+              ),
+              Image.asset(
+                "assets/logo.png",
+                scale: 4,
+              ),
+              const SizedBox(
+                height: 100,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -38,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "Hi, Welcome Back!",
-                        style: utils.largeLabelTextStyle(),
+                        style: utils.largeLabelTextStyle(color: Colors.white),
                       ),
                     ),
                     const SizedBox(
@@ -70,6 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           child: const Icon(
                             Icons.remove_red_eye,
+                            color: purpleColor,
                           ),
                         ),
                         validator: (pas) {
@@ -87,52 +104,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  loginCheck = !loginCheck;
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: loginCheck
-                                        ? purpleColor
-                                        : Colors.transparent,
-                                    borderRadius: BorderRadius.circular(7),
-                                    border: Border.all(
-                                        width: 1,
-                                        color: loginCheck
-                                            ? Colors.transparent
-                                            : Colors.grey)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: loginCheck
-                                      ? const Icon(
-                                          Icons.check,
-                                          size: 12.0,
-                                          color: Colors.white,
-                                        )
-                                      : const Icon(
-                                          Icons.check_box_outline_blank,
-                                          size: 12.0,
-                                          color: Colors.white,
-                                        ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Remember Me",
-                              style: utils.smallLableTextStyle(),
-                            ),
-                          ],
-                        ),
                         const SizedBox(
                           height: 5,
                         ),
@@ -212,16 +183,13 @@ class _LoginScreenState extends State<LoginScreen> {
     if (kDebugMode) {
       print(_email);
     }
-
-    setState(() => _isLoading = true);
+    EasyLoading.show(status: "Loading...");
     Authentication()
         .signIn(email: _email.toString(), password: _password.toString())
         .then((result) {
       if (result == null) {
         Navigator.pushNamed(context, homeScreenRoute);
       }
-
-      setState(() => _isLoading = false);
     });
   }
 }

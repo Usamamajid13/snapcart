@@ -41,16 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 height: 40,
                 width: 40,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
                 child: Image.asset(
-                  "asset/account.png",
+                  "assets/account.png",
                   scale: 8,
                 ),
               ),
-              Text(
+              const Text(
                 "Total Expenses",
                 style: TextStyle(color: Colors.white),
               ),

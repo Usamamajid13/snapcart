@@ -19,10 +19,19 @@ class Authentication {
           email: email!, password: password!);
       return null;
     } on FirebaseAuthException catch (e) {
+      EasyLoading.showError(e.message.toString());
       return e.message;
     } on PlatformException catch (e) {
+      if (kDebugMode) {
+        print(e.message);
+      }
+
       return e.message;
     } on SocketException catch (e) {
+      if (kDebugMode) {
+        print(e.message);
+      }
+
       return e.message;
     }
   }

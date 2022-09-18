@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import 'Authentication/catalog_screen.dart';
 import 'Authentication/forgot_password.dart';
 import 'Authentication/login_screen.dart';
 import 'Authentication/sign_up_screen.dart';
@@ -25,7 +26,7 @@ void configLoading() {
   EasyLoading.instance
     ..displayDuration = const Duration(milliseconds: 2000)
     ..indicatorType = EasyLoadingIndicatorType.dualRing
-    ..loadingStyle = EasyLoadingStyle.dark
+    ..loadingStyle = EasyLoadingStyle.light
     ..indicatorSize = 45.0
     ..radius = 10.0
     ..progressColor = Colors.yellow
@@ -59,10 +60,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Snapcart',
       debugShowCheckedModeBanner: false,
-      initialRoute: homeScreenRoute,
+      initialRoute: splashScreenRoute,
       builder: EasyLoading.init(),
       routes: {
-        // splashScreenRoute: (context) => const SplashScreen(),
+        splashScreenRoute: (context) => const SplashScreen(),
         loginScreenRoute: (context) => const LoginScreen(),
         forgotPasswordScreenRoute: (context) => const ForgotPasswordScreen(),
         signUpScreenRoute: (context) => const SignUpScreen(),
@@ -71,6 +72,7 @@ class _MyAppState extends State<MyApp> {
         termsAndConditionsScreenRoute: (context) => const TermsAndConditions(),
         historyScreenRoute: (context) => const HistoryScreen(),
         profileScreenRoute: (context) => const ProfileScreen(),
+        catalogScreenRoute: (context) => const CatalogScreen(),
       },
     );
   }

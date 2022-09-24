@@ -58,7 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "Create an account",
-                        style: utils.largeLabelTextStyle(),
+                        style: utils.largeLabelTextStyle(color: Colors.white),
                       ),
                     ),
                     const SizedBox(

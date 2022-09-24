@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:snapcart/MainScreen/bill_screen.dart';
 
 import 'Authentication/catalog_screen.dart';
 import 'Authentication/forgot_password.dart';
@@ -14,6 +15,7 @@ import 'DrawerScreens/privacy_screen.dart';
 import 'DrawerScreens/terms_and_conditions_screen.dart';
 import 'DrawerScreens/history_screen.dart';
 import 'DrawerScreens/profile_screen.dart';
+import 'MainScreen/qr_scanner.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -72,6 +74,11 @@ class _MyAppState extends State<MyApp> {
         termsAndConditionsScreenRoute: (context) => const TermsAndConditions(),
         historyScreenRoute: (context) => const HistoryScreen(),
         profileScreenRoute: (context) => const ProfileScreen(),
+        qrScanScreenRoute: (context) => const QrScanner(),
+        billScreenRoute: (context) {
+          var i = ModalRoute.of(context)!.settings.arguments;
+          return BillScreen(i);
+        },
         catalogScreenRoute: (context) => const CatalogScreen(),
       },
     );

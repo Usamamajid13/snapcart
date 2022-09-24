@@ -11,4 +11,6 @@ const privacyScreenRoute = "/privacyScreenRoute";
 const termsAndConditionsScreenRoute = "/termsAndConditionsScreenRoute";
 const historyScreenRoute = "/historyScreenRoute";
 const profileScreenRoute = "/profileScreenRoute";
+const qrScanScreenRoute = "/qrScanScreenRoute";
+const billScreenRoute = "/billScreenRoute";
 const catalogScreenRoute = "/catalogScreenRoute";

@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.black,
       key: _key,
       appBar: AppBar(
-        title: const Text("GeeksforGeeks"),
+        title: const Text("Snap Cart"),
         titleSpacing: 00.0,
         centerTitle: true,
         toolbarHeight: 60.2,
@@ -224,35 +224,40 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 20,
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Center(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.qr_code_scanner,
-                    color: purpleColor,
-                    size: 20,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "Scan",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, qrScanScreenRoute);
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Center(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.qr_code_scanner,
+                      color: purpleColor,
+                      size: 20,
                     ),
-                  ),
-                ],
-              )),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Scan",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                )),
+              ),
             ),
             const SizedBox(
               height: 20,

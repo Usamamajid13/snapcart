@@ -2,13 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:snapcart/MainScreen/bill_screen.dart';
+import 'package:snapcart/MainScreen/multiple_bill_screen.dart';
 
 import 'Authentication/catalog_screen.dart';
 import 'Authentication/forgot_password.dart';
 import 'Authentication/login_screen.dart';
 import 'Authentication/sign_up_screen.dart';
 import 'Authentication/splash_screen.dart';
+import 'Authentication/upload_profile_pic.dart';
 import 'Constants/constants.dart';
 import 'MainScreen/home_screen.dart';
 import 'DrawerScreens/privacy_screen.dart';
@@ -80,6 +81,10 @@ class _MyAppState extends State<MyApp> {
           return BillScreen(i);
         },
         catalogScreenRoute: (context) => const CatalogScreen(),
+        uploadProfilePictureScreenRoute: (context) {
+          var i = ModalRoute.of(context)!.settings.arguments;
+          return UploadProfilePictureScreen(i);
+        },
       },
     );
   }

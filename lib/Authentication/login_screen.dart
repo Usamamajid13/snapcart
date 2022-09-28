@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../AuthController/auth_controller.dart';
 import '../Constants/constants.dart';
@@ -186,8 +187,10 @@ class _LoginScreenState extends State<LoginScreen> {
     EasyLoading.show(status: "Loading...");
     Authentication()
         .signIn(email: _email.toString(), password: _password.toString())
-        .then((result) {
+        .then((result) async {
       if (result == null) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("currentUserEmail", _email.toString());
         EasyLoading.showSuccess("Log In Successful");
         Navigator.pushNamedAndRemoveUntil(
             context, homeScreenRoute, (route) => false);

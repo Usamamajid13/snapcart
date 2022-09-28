@@ -11,8 +11,6 @@ class Authentication {
 
   get user => _auth.currentUser;
 
-//////////////////////////sign up method
-
   Future signUp({String? email, String? password}) async {
     try {
       await _auth.createUserWithEmailAndPassword(
@@ -56,13 +54,8 @@ class Authentication {
     }
   }
 
-  ////////////////// sign out
   Future signOut() async {
     await _auth.signOut();
-
-    if (kDebugMode) {
-      print('signed out');
-    }
   }
 
   late EmailAuth auth;
@@ -87,19 +80,6 @@ class Authentication {
       if (kDebugMode) {
         print(e.message);
       }
-      return e.message;
-    }
-  }
-
-  Future resetPassword() async {
-    try {
-      // await _auth.confirmPasswordReset(code: code, newPassword: newPassword);
-      return null;
-    } on FirebaseAuthException catch (e) {
-      return e.message;
-    } on PlatformException catch (e) {
-      return e.message;
-    } on SocketException catch (e) {
       return e.message;
     }
   }

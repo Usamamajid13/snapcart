@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -20,6 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   var utils = AppUtils();
   final formKey = GlobalKey<FormState>();
   String? _email;
+  String? _name;
   String? _password;
   bool isObscure1 = true;
   bool isObscure2 = true;
@@ -70,10 +72,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ? "Please Enter A Valid Email"
                                 : null,
                         onChange: (value) => _email = value,
-                        hintText: "Enter your email",
+                        hintText: "Please Enter your email",
                         obscureText: false,
                         labelText: "Email",
                         labelColor: purpleColor),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    utils.textField(
+                        onChange: (value) => _name = value,
+                        hintText: "Please Enter Your Name",
+                        labelText: "Name",
+                        labelColor: purpleColor,
+                        obscureText: false,
+                        validator: (pas) {
+                          if (pas!.isEmpty) {
+                            return 'Please Enter Your Name !';
+                          }
+                          return null;
+                        }),
                     const SizedBox(
                       height: 15,
                     ),
@@ -209,8 +226,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         .signUp(email: _email.toString(), password: _password.toString())
         .then((result) {
       if (result == null) {
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(_email.toString())
+            .set({
+          "email": _email,
+          "password": _password,
+          "name": _name,
+          "date": DateTime.now().millisecondsSinceEpoch,
+        });
         EasyLoading.showSuccess("Sign Up Successful");
-        Navigator.pushNamed(context, homeScreenRoute);
+        Navigator.pushNamed(context, uploadProfilePictureScreenRoute,
+            arguments: _email);
       }
     });
     Timer(const Duration(seconds: 30), () {

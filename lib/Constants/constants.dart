@@ -14,3 +14,4 @@ const profileScreenRoute = "/profileScreenRoute";
 const qrScanScreenRoute = "/qrScanScreenRoute";
 const billScreenRoute = "/billScreenRoute";
 const catalogScreenRoute = "/catalogScreenRoute";
+const uploadProfilePictureScreenRoute = "/uploadProfilePictureScreenRoute";

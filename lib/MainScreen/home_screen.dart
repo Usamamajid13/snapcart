@@ -1,4 +1,8 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snapcart/AuthController/auth_controller.dart';
 
 import '../Constants/constants.dart';
@@ -51,6 +55,42 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
+  String? name;
+  String? email;
+  String? pic;
+  getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var user = prefs.getString("currentUserEmail");
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user)
+        .get()
+        .then((value) {
+      print(value.data());
+      name = value.data()!["name"];
+      email = value.data()!["email"];
+      print(name);
+      print(email);
+      setState(() {});
+    });
+    FirebaseFirestore.instance
+        .collection("profilePictures")
+        .doc(user)
+        .get()
+        .then((value) {
+      print(value.data());
+      pic = value.data()!["profilePicture"];
+
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Items> myList = [item1, item2, item3, item4, item5, item6];
     return Scaffold(
@@ -81,16 +121,16 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.black,
         child: ListView(
           children: <Widget>[
-            const UserAccountsDrawerHeader(
-              accountName: Text("Usama Majid"),
+            UserAccountsDrawerHeader(
+              accountName: Text(name ?? "Loading..."),
               decoration: BoxDecoration(
                 color: purpleColor,
               ),
-              accountEmail: Text("usama@gmail.com"),
+              accountEmail: Text(email ?? "Loading.."),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Text(
-                  "A",
+                  name.toString()[0] == null ? "Loading.." : name.toString()[0],
                   style: TextStyle(
                     fontSize: 40.0,
                     color: purpleColor,
@@ -99,9 +139,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, profileScreenRoute);
+                await Navigator.pushNamed(context, profileScreenRoute);
+                getUser();
               },
               child: const ListTile(
                 title: Text(
@@ -117,9 +158,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, historyScreenRoute);
+                await Navigator.pushNamed(context, historyScreenRoute);
+                getUser();
               },
               child: const ListTile(
                 title: Text(
@@ -135,9 +177,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, termsAndConditionsScreenRoute);
+                await Navigator.pushNamed(
+                    context, termsAndConditionsScreenRoute);
+                getUser();
               },
               child: const ListTile(
                 title: Text(
@@ -153,9 +197,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, privacyScreenRoute);
+                await Navigator.pushNamed(context, privacyScreenRoute);
+                getUser();
               },
               child: const ListTile(
                 title: Text(
@@ -203,22 +248,35 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Hi, Usama",
+                Text(
+                  "Hi $name",
                   style: TextStyle(color: Colors.white, fontSize: 19),
                 ),
-                Container(
-                  height: 30,
-                  width: 30,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Image.asset(
-                    "assets/account.png",
-                    scale: 8,
-                  ),
-                ),
+                pic != null
+                    ? Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              pic!,
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                      )
+                    : Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/account.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
               ],
             ),
             const SizedBox(

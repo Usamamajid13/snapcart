@@ -14,6 +14,7 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  String? _chosenValue;
   @override
   void initState() {
     getMyHistory();
@@ -64,6 +65,52 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 child: Text(
                   "HISTORY LIST",
                   style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: _chosenValue,
+                    iconEnabledColor: Colors.white,
+                    style: TextStyle(color: Colors.white),
+                    items: <String>[
+                      'Last Week',
+                      'Last Month',
+                      'Last Year',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: TextStyle(
+                              color: purpleColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      );
+                    }).toList(),
+                    hint: Text(
+                      "Filter ",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    onChanged: (String? value) {
+                      setState(() {
+                        _chosenValue = value;
+                        if (_chosenValue == "Last Week") {
+                          appleFilterOneWeek();
+                        } else if (_chosenValue == "Last Month") {
+                          appleFilterOneMonth();
+                        } else if (_chosenValue == "Last Year") {
+                          appleFilterOneYear();
+                        }
+                      });
+                    },
+                  ),
                 ),
               ),
               SizedBox(
@@ -135,5 +182,88 @@ class _HistoryScreenState extends State<HistoryScreen> {
         ),
       ),
     );
+  }
+
+  appleFilterOneWeek() async {
+    bills = [];
+    print("filter");
+    lengthOfHistory = null;
+    var now = new DateTime.now();
+    var now_1w = now.subtract(Duration(days: 7));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var user = prefs.getString("currentUserEmail");
+    FirebaseFirestore.instance
+        .collection("Bills")
+        .doc(user)
+        .collection("myBills")
+        .get()
+        .then((value) {
+      for (int i = 0; i < value.docs.length; i++) {
+        if (now_1w.isBefore(DateTime.fromMillisecondsSinceEpoch(
+            value.docs[i].data()["date"]))) {
+          bills.add(value.docs[i].data());
+          print("Here $i");
+        }
+      }
+      lengthOfHistory = bills.length;
+      setState(() {});
+    });
+  }
+
+  appleFilterOneMonth() async {
+    bills = [];
+    print("filter");
+    lengthOfHistory = null;
+    var now = new DateTime.now();
+    var now_1m = new DateTime(now.year, now.month - 1, now.day);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var user = prefs.getString("currentUserEmail");
+    FirebaseFirestore.instance
+        .collection("Bills")
+        .doc(user)
+        .collection("myBills")
+        .get()
+        .then((value) {
+      for (int i = 0; i < value.docs.length; i++) {
+        if (now_1m.isBefore(DateTime.fromMillisecondsSinceEpoch(
+            value.docs[i].data()["date"]))) {
+          bills.add(value.docs[i].data());
+          print("Here $i");
+        }
+      }
+      lengthOfHistory = bills.length;
+      setState(() {});
+    });
+  }
+
+  appleFilterOneYear() async {
+    bills = [];
+    print("filter");
+    lengthOfHistory = null;
+    var now = new DateTime.now();
+    var now_1y = new DateTime(now.year - 1, now.month, now.day);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var user = prefs.getString("currentUserEmail");
+    FirebaseFirestore.instance
+        .collection("Bills")
+        .doc(user)
+        .collection("myBills")
+        .get()
+        .then((value) {
+      for (int i = 0; i < value.docs.length; i++) {
+        if (now_1y.isBefore(DateTime.fromMillisecondsSinceEpoch(
+            value.docs[i].data()["date"]))) {
+          bills.add(value.docs[i].data());
+          print("Here $i");
+        }
+      }
+      lengthOfHistory = bills.length;
+      setState(() {});
+    });
   }
 }

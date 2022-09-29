@@ -240,7 +240,7 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
           Spacer(),
           GestureDetector(
             onTap: () {
-              // uploadBill();
+              uploadBill();
             },
             child: Container(
               height: 50,
@@ -315,117 +315,56 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
     );
   }
 
-  // uploadBill() async {
-  //   EasyLoading.show(status: "Loading...");
-  //
-  //   var bread;
-  //   var drink;
-  //   var meals;
-  //   var eggs;
-  //   if (kDebugMode) {
-  //     print(widget.scannedBill.toString().replaceAll("\$", ""));
-  //   }
-  //
-  //   await FirebaseFirestore.instance
-  //       .collection("FoodItems")
-  //       .doc(email)
-  //       .get()
-  //       .then((value) {
-  //     bread = value["bread"];
-  //     drink = value["drink"];
-  //     meals = value["meals"];
-  //     eggs = value["eggs"];
-  //   });
-  //   if (kDebugMode) {
-  //     print({
-  //       "bread": bread,
-  //       "drink": drink,
-  //       "meals": meals,
-  //       "eggs": eggs,
-  //     });
-  //   }
-  //   if (qrValues[widget.scannedBill] == "Medium Bread" ||
-  //       qrValues[widget.scannedBill] == "Small Bread" ||
-  //       qrValues[widget.scannedBill] == "Large Bread") {
-  //     FirebaseFirestore.instance
-  //         .collection("Bills")
-  //         .doc(email)
-  //         .collection("myBills")
-  //         .add({
-  //       "date": DateTime.now().millisecondsSinceEpoch,
-  //       "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
-  //       "email": email,
-  //       "bread":
-  //           double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
-  //     });
-  //     bread = bread +
-  //         double.parse(widget.scannedBill.toString().replaceAll('\$', ""));
-  //   } else if (qrValues[widget.scannedBill] == "Small Food Deal" ||
-  //       qrValues[widget.scannedBill] == "Medium Food Deal" ||
-  //       qrValues[widget.scannedBill] == "Large Food Deal") {
-  //     meals = meals +
-  //         double.parse(
-  //             widget.scannedBill.toString().replaceAll('\$', "").toString());
-  //     FirebaseFirestore.instance
-  //         .collection("Bills")
-  //         .doc(email)
-  //         .collection("myBills")
-  //         .add({
-  //       "date": DateTime.now().millisecondsSinceEpoch,
-  //       "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
-  //       "email": email,
-  //       "meals":
-  //           double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
-  //     });
-  //   } else if (qrValues[widget.scannedBill] == "1.5 Litre Drink" ||
-  //       qrValues[widget.scannedBill] == "2 Litre Drink" ||
-  //       qrValues[widget.scannedBill] == "2.25 Litre Drink") {
-  //     drink = drink +
-  //         double.parse(
-  //             widget.scannedBill.toString().replaceAll('\$', "").toString());
-  //     FirebaseFirestore.instance
-  //         .collection("Bills")
-  //         .doc(email)
-  //         .collection("myBills")
-  //         .add({
-  //       "date": DateTime.now().millisecondsSinceEpoch,
-  //       "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
-  //       "email": email,
-  //       "drink":
-  //           double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
-  //     });
-  //   } else {
-  //     FirebaseFirestore.instance
-  //         .collection("Bills")
-  //         .doc(email)
-  //         .collection("myBills")
-  //         .add({
-  //       "date": DateTime.now().millisecondsSinceEpoch,
-  //       "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
-  //       "email": email,
-  //       "eggs": double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
-  //     });
-  //     eggs = eggs +
-  //         double.parse(
-  //             widget.scannedBill.toString().replaceAll('\$', "").toString());
-  //   }
-  //   if (kDebugMode) {
-  //     print({
-  //       "bread": bread,
-  //       "drink": drink,
-  //       "meals": meals,
-  //       "eggs": eggs,
-  //     });
-  //   }
-  //   FirebaseFirestore.instance.collection("FoodItems").doc(email).set({
-  //     "bread": bread,
-  //     "drink": drink,
-  //     "meals": meals,
-  //     "eggs": eggs,
-  //   }).then((value) {
-  //     EasyLoading.showSuccess("Bill Saved Successfully!");
-  //     Navigator.pushReplacementNamed(context, homeScreenRoute);
-  //   });
-  //   EasyLoading.dismiss();
-  // }
+  uploadBill() async {
+    EasyLoading.show(status: "Loading...");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var bread;
+    var drink;
+    var meals;
+    var eggs;
+    if (kDebugMode) {
+      print(widget.scannedBill.toString().replaceAll("\$", ""));
+    }
+
+    await FirebaseFirestore.instance
+        .collection("FoodItems")
+        .doc(email)
+        .get()
+        .then((value) {
+      bread = value["bread"];
+      drink = value["drink"];
+      meals = value["meals"];
+      eggs = value["eggs"];
+    });
+
+    FirebaseFirestore.instance
+        .collection("MultipleBills")
+        .doc(email)
+        .collection("myBills")
+        .add({
+      "date": DateTime.now().millisecondsSinceEpoch,
+      "totalBill": bill,
+      "email": email,
+      "bread": breadBill,
+      "drink": drinksBill,
+      "meals": mealsBill,
+      "eggs": eggsBill,
+    });
+    bread = bread + breadBill;
+    drink = drink + drinksBill;
+    meals = meals + mealsBill;
+    eggs = eggs + eggsBill;
+
+    FirebaseFirestore.instance.collection("FoodItems").doc(email).set({
+      "bread": bread,
+      "drink": drink,
+      "meals": meals,
+      "eggs": eggs,
+    }).then((value) {
+      prefs.remove("bills");
+      EasyLoading.showSuccess("Bill Saved Successfully!");
+      Navigator.pushReplacementNamed(context, homeScreenRoute);
+    });
+    EasyLoading.dismiss();
+  }
 }

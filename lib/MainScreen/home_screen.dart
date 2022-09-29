@@ -209,7 +209,26 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               child: const ListTile(
                 title: Text(
-                  "History",
+                  "Single Product History",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                leading: Icon(
+                  Icons.access_time,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                Navigator.pop(context);
+                await Navigator.pushNamed(context, multipleHistoryScreenRoute);
+                getUser();
+              },
+              child: const ListTile(
+                title: Text(
+                  "Multiple Product History",
                   style: TextStyle(
                     color: Colors.white,
                   ),

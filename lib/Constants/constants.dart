@@ -11,6 +11,7 @@ const homeScreenRoute = "/homeScreenRoute";
 const privacyScreenRoute = "/privacyScreenRoute";
 const termsAndConditionsScreenRoute = "/termsAndConditionsScreenRoute";
 const historyScreenRoute = "/historyScreenRoute";
+const multipleHistoryScreenRoute = "/multipleHistoryScreenRoute";
 const historyDetailScreenRoute = "/historyDetailScreenRoute";
 const profileScreenRoute = "/profileScreenRoute";
 const qrScanScreenRoute = "/qrScanScreenRoute";

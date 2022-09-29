@@ -13,6 +13,7 @@ import 'Authentication/splash_screen.dart';
 import 'Authentication/upload_profile_pic.dart';
 import 'Constants/constants.dart';
 import 'DrawerScreens/history_detail_screen.dart';
+import 'DrawerScreens/mulitple_history_screen.dart';
 import 'MainScreen/double_qr_scanner.dart';
 import 'MainScreen/home_screen.dart';
 import 'DrawerScreens/privacy_screen.dart';
@@ -81,6 +82,7 @@ class _MyAppState extends State<MyApp> {
         privacyScreenRoute: (context) => const PrivacyScreen(),
         termsAndConditionsScreenRoute: (context) => const TermsAndConditions(),
         historyScreenRoute: (context) => const HistoryScreen(),
+        multipleHistoryScreenRoute: (context) => const MultipleHistoryScreen(),
         historyDetailScreenRoute: (context) => const HistoryDetailScreen(),
         profileScreenRoute: (context) => const ProfileScreen(),
         qrScanScreenRoute: (context) => const QrScanner(),

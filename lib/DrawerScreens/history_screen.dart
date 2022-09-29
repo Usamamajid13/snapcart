@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,24 +75,24 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   child: DropdownButton<String>(
                     value: _chosenValue,
                     iconEnabledColor: Colors.white,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     items: <String>[
+                      'Last 3 Days',
                       'Last Week',
                       'Last Month',
-                      'Last Year',
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(
                           value,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: purpleColor,
                               fontSize: 18,
                               fontWeight: FontWeight.w600),
                         ),
                       );
                     }).toList(),
-                    hint: Text(
+                    hint: const Text(
                       "Filter ",
                       style: TextStyle(
                           color: Colors.white,
@@ -105,8 +106,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           appleFilterOneWeek();
                         } else if (_chosenValue == "Last Month") {
                           appleFilterOneMonth();
-                        } else if (_chosenValue == "Last Year") {
-                          appleFilterOneYear();
+                        } else if (_chosenValue == "Last 3 Days") {
+                          appleFilterThreeDays();
                         }
                       });
                     },
@@ -133,46 +134,55 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   : Column(
                       children: [
                         for (int i = 0; i < lengthOfHistory!; i++)
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            height: 70,
-                            decoration: BoxDecoration(
-                              color: purpleColor,
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            width: MediaQuery.of(context).size.width,
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      "Record ${i + 1}",
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, historyDetailScreenRoute);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              height: 70,
+                              decoration: BoxDecoration(
+                                color: purpleColor,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              width: MediaQuery.of(context).size.width,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        "Record ${i + 1}",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      DateFormat('dd MMMM, yyyy').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                              bills[i]["date"])),
-                                      style: const TextStyle(
-                                        color: Colors.white,
+                                      Text(
+                                        DateFormat('dd MMMM, yyyy').format(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                bills[i]["date"])),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                // Text("13",
-                                Text("\$${bills[i]["totalBill"]}",
-                                    style:
-                                        const TextStyle(color: Colors.white)),
-                              ],
+                                    ],
+                                  ),
+                                  // Text("13",
+                                  Text("\$${bills[i]["totalBill"]}",
+                                      style:
+                                          const TextStyle(color: Colors.white)),
+                                ],
+                              ),
                             ),
                           ),
                       ],
@@ -186,10 +196,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   appleFilterOneWeek() async {
     bills = [];
-    print("filter");
+    if (kDebugMode) {
+      print("filter");
+    }
     lengthOfHistory = null;
-    var now = new DateTime.now();
-    var now_1w = now.subtract(Duration(days: 7));
+    var now = DateTime.now();
+    var now_1w = now.subtract(const Duration(days: 7));
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var user = prefs.getString("currentUserEmail");
@@ -203,7 +215,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
         if (now_1w.isBefore(DateTime.fromMillisecondsSinceEpoch(
             value.docs[i].data()["date"]))) {
           bills.add(value.docs[i].data());
-          print("Here $i");
+          if (kDebugMode) {
+            print("Here $i");
+          }
         }
       }
       lengthOfHistory = bills.length;
@@ -213,10 +227,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   appleFilterOneMonth() async {
     bills = [];
-    print("filter");
+    if (kDebugMode) {
+      print("filter");
+    }
     lengthOfHistory = null;
-    var now = new DateTime.now();
-    var now_1m = new DateTime(now.year, now.month - 1, now.day);
+    var now = DateTime.now();
+    var now_1m = DateTime(now.year, now.month - 1, now.day);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -231,7 +247,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
         if (now_1m.isBefore(DateTime.fromMillisecondsSinceEpoch(
             value.docs[i].data()["date"]))) {
           bills.add(value.docs[i].data());
-          print("Here $i");
+          if (kDebugMode) {
+            print("Here $i");
+          }
         }
       }
       lengthOfHistory = bills.length;
@@ -239,12 +257,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
     });
   }
 
-  appleFilterOneYear() async {
+  appleFilterThreeDays() async {
     bills = [];
-    print("filter");
+    if (kDebugMode) {
+      print("filter");
+    }
     lengthOfHistory = null;
-    var now = new DateTime.now();
-    var now_1y = new DateTime(now.year - 1, now.month, now.day);
+    var now = DateTime.now();
+    var now_3d = now.subtract(const Duration(days: 3));
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -256,10 +276,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
         .get()
         .then((value) {
       for (int i = 0; i < value.docs.length; i++) {
-        if (now_1y.isBefore(DateTime.fromMillisecondsSinceEpoch(
+        if (now_3d.isBefore(DateTime.fromMillisecondsSinceEpoch(
             value.docs[i].data()["date"]))) {
           bills.add(value.docs[i].data());
-          print("Here $i");
+          if (kDebugMode) {
+            print("Here $i");
+          }
         }
       }
       lengthOfHistory = bills.length;

@@ -8,15 +8,15 @@ import 'package:ticket_material/ticket_material.dart';
 import '../Constants/constants.dart';
 import '../QrValues/Qr.dart';
 
-class BillScreen extends StatefulWidget {
+class SingleProductScreen extends StatefulWidget {
   final scannedBill;
-  const BillScreen(this.scannedBill, {Key? key}) : super(key: key);
+  const SingleProductScreen(this.scannedBill, {Key? key}) : super(key: key);
 
   @override
-  State<BillScreen> createState() => _BillScreenState();
+  State<SingleProductScreen> createState() => _SingleProductScreenState();
 }
 
-class _BillScreenState extends State<BillScreen> {
+class _SingleProductScreenState extends State<SingleProductScreen> {
   String? email;
 
   @override
@@ -25,7 +25,6 @@ class _BillScreenState extends State<BillScreen> {
     if (kDebugMode) {
       print(widget.scannedBill.toString());
     }
-    // getPreviousBills();
     super.initState();
   }
 
@@ -46,28 +45,13 @@ class _BillScreenState extends State<BillScreen> {
     });
   }
 
-  // List<String> listOfBills = [];
-  // getPreviousBills() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   var oldBills = prefs.getStringList("bills");
-  //   if (oldBills != null) {
-  //     listOfBills = oldBills;
-  //     listOfBills.add(widget.scannedBill);
-  //     prefs.setStringList("bills", listOfBills);
-  //   } else {
-  //     listOfBills.add(widget.scannedBill);
-  //     prefs.setStringList("bills", listOfBills);
-  //   }
-  //   setState(() {});
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: const Color(0xff966FD6),
-        title: const Text('Bill'),
+        title: const Text('Products'),
         elevation: 10.0,
       ),
       backgroundColor: Colors.black,
@@ -128,7 +112,7 @@ class _BillScreenState extends State<BillScreen> {
               rightChild: const Icon(Icons.emoji_food_beverage_rounded),
             ),
           ),
-          Spacer(),
+          const Spacer(),
           GestureDetector(
             onTap: () {
               uploadBill();
@@ -167,7 +151,8 @@ class _BillScreenState extends State<BillScreen> {
           ),
           GestureDetector(
             onTap: () {
-              print("Hello");
+              Navigator.pushReplacementNamed(context, multipleScansScreenRoute,
+                  arguments: widget.scannedBill);
             },
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -227,12 +212,15 @@ class _BillScreenState extends State<BillScreen> {
       meals = value["meals"];
       eggs = value["eggs"];
     });
-    print({
-      "bread": bread,
-      "drink": drink,
-      "meals": meals,
-      "eggs": eggs,
-    });
+
+    if (kDebugMode) {
+      print({
+        "bread": bread,
+        "drink": drink,
+        "meals": meals,
+        "eggs": eggs,
+      });
+    }
     if (qrValues[widget.scannedBill] == "Medium Bread" ||
         qrValues[widget.scannedBill] == "Small Bread" ||
         qrValues[widget.scannedBill] == "Large Bread") {
@@ -244,11 +232,11 @@ class _BillScreenState extends State<BillScreen> {
         "date": DateTime.now().millisecondsSinceEpoch,
         "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
         "email": email,
-        "bread": double.parse(
-            "${widget.scannedBill.toString().replaceAll('\$', "")}")
+        "bread":
+            double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
       });
       bread = bread +
-          double.parse("${widget.scannedBill.toString().replaceAll('\$', "")}");
+          double.parse(widget.scannedBill.toString().replaceAll('\$', ""));
     } else if (qrValues[widget.scannedBill] == "Small Food Deal" ||
         qrValues[widget.scannedBill] == "Medium Food Deal" ||
         qrValues[widget.scannedBill] == "Large Food Deal") {
@@ -263,8 +251,8 @@ class _BillScreenState extends State<BillScreen> {
         "date": DateTime.now().millisecondsSinceEpoch,
         "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
         "email": email,
-        "meals": double.parse(
-            "${widget.scannedBill.toString().replaceAll('\$', "")}")
+        "meals":
+            double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
       });
     } else if (qrValues[widget.scannedBill] == "1.5 Litre Drink" ||
         qrValues[widget.scannedBill] == "2 Litre Drink" ||
@@ -280,8 +268,8 @@ class _BillScreenState extends State<BillScreen> {
         "date": DateTime.now().millisecondsSinceEpoch,
         "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
         "email": email,
-        "drink": double.parse(
-            "${widget.scannedBill.toString().replaceAll('\$', "")}")
+        "drink":
+            double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
       });
     } else {
       FirebaseFirestore.instance
@@ -292,19 +280,20 @@ class _BillScreenState extends State<BillScreen> {
         "date": DateTime.now().millisecondsSinceEpoch,
         "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
         "email": email,
-        "eggs": double.parse(
-            "${widget.scannedBill.toString().replaceAll('\$', "")}")
+        "eggs": double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
       });
       eggs = eggs +
           double.parse(
               widget.scannedBill.toString().replaceAll('\$', "").toString());
     }
-    print({
-      "bread": bread,
-      "drink": drink,
-      "meals": meals,
-      "eggs": eggs,
-    });
+    if (kDebugMode) {
+      print({
+        "bread": bread,
+        "drink": drink,
+        "meals": meals,
+        "eggs": eggs,
+      });
+    }
     FirebaseFirestore.instance.collection("FoodItems").doc(email).set({
       "bread": bread,
       "drink": drink,

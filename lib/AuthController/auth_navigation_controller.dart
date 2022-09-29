@@ -10,7 +10,7 @@ class AuthController {
   Future<void> checkUserExistence(BuildContext context) async {
     if (_auth.currentUser == null) {
       Navigator.pushNamedAndRemoveUntil(
-          context, loginScreenRoute, (route) => false);
+          context, catalogScreenRoute, (route) => false);
 
       return;
     }

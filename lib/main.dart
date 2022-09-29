@@ -2,7 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:snapcart/MainScreen/bill_screen.dart';
+import 'package:snapcart/MainScreen/single_product_screen.dart';
+import 'package:snapcart/MainScreen/multiple_products_screen.dart';
 
 import 'Authentication/catalog_screen.dart';
 import 'Authentication/forgot_password.dart';
@@ -11,6 +12,8 @@ import 'Authentication/sign_up_screen.dart';
 import 'Authentication/splash_screen.dart';
 import 'Authentication/upload_profile_pic.dart';
 import 'Constants/constants.dart';
+import 'DrawerScreens/history_detail_screen.dart';
+import 'MainScreen/double_qr_scanner.dart';
 import 'MainScreen/home_screen.dart';
 import 'DrawerScreens/privacy_screen.dart';
 import 'DrawerScreens/terms_and_conditions_screen.dart';
@@ -71,14 +74,20 @@ class _MyAppState extends State<MyApp> {
         forgotPasswordScreenRoute: (context) => const ForgotPasswordScreen(),
         signUpScreenRoute: (context) => const SignUpScreen(),
         homeScreenRoute: (context) => const HomeScreen(),
+        multipleScansScreenRoute: (context) {
+          var i = ModalRoute.of(context)!.settings.arguments;
+          return MultipleProductsScreen(i);
+        },
         privacyScreenRoute: (context) => const PrivacyScreen(),
         termsAndConditionsScreenRoute: (context) => const TermsAndConditions(),
         historyScreenRoute: (context) => const HistoryScreen(),
+        historyDetailScreenRoute: (context) => const HistoryDetailScreen(),
         profileScreenRoute: (context) => const ProfileScreen(),
         qrScanScreenRoute: (context) => const QrScanner(),
+        doubleScannerScreenRoute: (context) => const DoubleQrScanner(),
         billScreenRoute: (context) {
           var i = ModalRoute.of(context)!.settings.arguments;
-          return BillScreen(i);
+          return SingleProductScreen(i);
         },
         catalogScreenRoute: (context) => const CatalogScreen(),
         uploadProfilePictureScreenRoute: (context) {

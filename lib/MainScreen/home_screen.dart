@@ -1,12 +1,9 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snapcart/AuthController/auth_controller.dart';
-
 import '../Constants/constants.dart';
 import '../Model/item_model.dart';
 
@@ -92,15 +89,25 @@ class _HomeScreenState extends State<HomeScreen> {
         .doc(user)
         .get()
         .then((value) {
-      print(value);
+      if (kDebugMode) {
+        print(value);
+      }
       bread = value["bread"].toDouble();
       drink = value["drink"].toDouble();
       meals = value["meals"].toDouble();
       eggs = value["eggs"].toDouble();
-      print(bread);
-      print(drink);
-      print(meals);
-      print(eggs);
+      if (kDebugMode) {
+        print(bread);
+      }
+      if (kDebugMode) {
+        print(drink);
+      }
+      if (kDebugMode) {
+        print(meals);
+      }
+      if (kDebugMode) {
+        print(eggs);
+      }
       item1 = Items(
           title: "Eggs",
           event: "\$${eggs.toStringAsFixed(2)}",
@@ -374,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 20,
             ),
             myList == null
-                ? Center(
+                ? const Center(
                     child: CupertinoActivityIndicator(
                     color: Colors.white,
                   ))
@@ -419,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Center(

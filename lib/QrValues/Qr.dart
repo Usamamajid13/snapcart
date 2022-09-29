@@ -1,7 +1,7 @@
 Map<String, dynamic> qrValues = {
   "\$3.10": "Medium Bread",
   "\$1.00": "Small Bread",
-  "\$6.60": "Large Bread",
+  "\$6.30": "Large Bread",
   "\$10.00": "Small Food Deal",
   "\$17.00": "Medium Food Deal",
   "\$31.90": "Large Food Deal",

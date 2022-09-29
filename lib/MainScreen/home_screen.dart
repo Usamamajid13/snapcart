@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,16 +18,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Items item1 = Items(title: "Eggs", event: "\$10.00", img: "assets/eggs.png");
-  Items item2 =
-      Items(title: "Bread", event: "\$20.00", img: "assets/bread.png");
-  Items item3 =
-      Items(title: "Drinks", event: "\$20.00", img: "assets/drink.png");
-  Items item4 = Items(
-    title: "Food Deals",
-    event: "\$30.00",
-    img: "assets/burger.png",
-  );
+  Items? item1;
+
+  Items? item2;
+  Items? item3;
+  Items? item4;
+
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   @override
@@ -73,11 +72,64 @@ class _HomeScreenState extends State<HomeScreen> {
 
       setState(() {});
     });
+    getAllBills();
+  }
+
+  var bread = 0.0;
+  var drink = 0.0;
+  var meals = 0.0;
+  var eggs = 0.0;
+  List<Items>? myList = [];
+
+  getAllBills() async {
+    myList!.clear();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var user = prefs.getString("currentUserEmail");
+    FirebaseFirestore.instance
+        .collection("FoodItems")
+        .doc(user)
+        .get()
+        .then((value) {
+      print(value);
+      bread = value["bread"].toDouble();
+      drink = value["drink"].toDouble();
+      meals = value["meals"].toDouble();
+      eggs = value["eggs"].toDouble();
+      print(bread);
+      print(drink);
+      print(meals);
+      print(eggs);
+      item1 = Items(
+          title: "Eggs",
+          event: "\$${eggs.toStringAsFixed(2)}",
+          img: "assets/eggs.png");
+      myList!.add(item1!);
+      setState(() {});
+      item2 = Items(
+          title: "Bread",
+          event: "\$${bread.toStringAsFixed(2)}",
+          img: "assets/bread.png");
+      myList!.add(item2!);
+      setState(() {});
+      item3 = Items(
+          title: "Drinks",
+          event: "\$${drink.toStringAsFixed(2)}",
+          img: "assets/drink.png");
+      myList!.add(item3!);
+      setState(() {});
+      item4 = Items(
+          title: "Food Deals",
+          event: "\$${meals.toStringAsFixed(2)}",
+          img: "assets/burger.png");
+      myList!.add(item4!);
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Items> myList = [item1, item2, item3, item4];
     return Scaffold(
       backgroundColor: Colors.black,
       key: _key,
@@ -270,8 +322,9 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 20,
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, qrScanScreenRoute);
+              onTap: () async {
+                await Navigator.pushNamed(context, qrScanScreenRoute);
+                getUser();
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
@@ -320,41 +373,72 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 20,
             ),
-            Expanded(
-              child: GridView.count(
-                  childAspectRatio: 1.0,
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 18,
-                  mainAxisSpacing: 18,
-                  children: myList.map((data) {
-                    return Container(
-                      decoration: BoxDecoration(
-                          color: purpleColor,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset(
-                            data.img!,
-                            width: 42,
-                          ),
-                          const SizedBox(
-                            height: 14,
-                          ),
-                          Text(
-                            data.title!,
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            data.event!,
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList()),
-            )
+            myList == null
+                ? Center(
+                    child: CupertinoActivityIndicator(
+                    color: Colors.white,
+                  ))
+                : Center(
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 10.0,
+                      runSpacing: 10.0,
+                      children: [
+                        for (int i = 0; i < myList!.length; i++)
+                          Container(
+                            width: 150,
+                            height: 150,
+                            decoration: BoxDecoration(
+                                color: purpleColor,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Image.asset(
+                                  myList![i].img!,
+                                  width: 42,
+                                ),
+                                const SizedBox(
+                                  height: 14,
+                                ),
+                                Text(
+                                  myList![i].title!,
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  myList![i].event! == null
+                                      ? "\$0.0"
+                                      : myList![i].event!,
+                                ),
+                              ],
+                            ),
+                          )
+                      ],
+                    ),
+                  ),
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: purpleColor,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Total Expenses: ${(bread + meals + eggs + drink).toStringAsFixed(2)} Dollars",
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

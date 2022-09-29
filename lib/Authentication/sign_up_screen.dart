@@ -236,6 +236,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "name": _name,
           "date": DateTime.now().millisecondsSinceEpoch,
         });
+        FirebaseFirestore.instance.collection("FoodItems").doc(_email).set({
+          "bread": 0.00,
+          "drink": 0.00,
+          "meals": 0.00,
+          "eggs": 0.00,
+        });
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("currentUserEmail", _email.toString());
         EasyLoading.showSuccess("Sign Up Successful");

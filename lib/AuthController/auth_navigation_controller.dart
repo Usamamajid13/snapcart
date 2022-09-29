@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snapcart/Constants/constants.dart';
@@ -13,7 +14,9 @@ class AuthController {
 
       return;
     }
-    print(_auth.currentUser!.email.toString());
+    if (kDebugMode) {
+      print(_auth.currentUser!.email.toString());
+    }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("currentUserEmail", _auth.currentUser!.email.toString());
     Navigator.pushNamedAndRemoveUntil(

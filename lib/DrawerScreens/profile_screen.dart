@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,13 +44,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .doc(user)
         .get()
         .then((value) {
-      print(value.data());
+      if (kDebugMode) {
+        print(value.data());
+      }
       name = value.data()!["name"];
       email = value.data()!["email"];
       DateTime now = DateTime.fromMillisecondsSinceEpoch(value.data()!["date"]);
       date = DateFormat('dd MMMM, yyyy').format(now);
-      print(name);
-      print(email);
+      if (kDebugMode) {
+        print(name);
+      }
+      if (kDebugMode) {
+        print(email);
+      }
       setState(() {});
     });
     FirebaseFirestore.instance
@@ -57,7 +64,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .doc(user)
         .get()
         .then((value) {
-      print(value.data());
+      if (kDebugMode) {
+        print(value.data());
+      }
       pic = value.data()!["profilePicture"];
 
       setState(() {});
@@ -132,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           Text(
             name ?? "Loading..",
-            style: TextStyle(fontSize: 26, color: Colors.white),
+            style: const TextStyle(fontSize: 26, color: Colors.white),
           ),
           const SizedBox(
             height: 300,
@@ -153,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Center(
               child: Text(
                 email ?? "Loading...",
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
@@ -180,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Center(
               child: Text(
                 date ?? "Loading...",
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
@@ -206,7 +215,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     final snapshot = await task!.whenComplete(() {});
     urlDownload = await snapshot.ref.getDownloadURL();
-    print("Url == == ===  == " + urlDownload.toString());
+    if (kDebugMode) {
+      print("Url == == ===  == $urlDownload");
+    }
     FirebaseFirestore.instance.collection("profilePictures").doc(email).set({
       "profilePicture": urlDownload,
     });
@@ -219,7 +230,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
-          title: Center(child: const Text('Choose your option')),
+          title: const Center(child: Text('Choose your option')),
           content: Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: Row(
@@ -235,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: BoxDecoration(
                         color: Colors.grey.withOpacity(0.2),
                         shape: BoxShape.circle),
-                    child: Icon(
+                    child: const Icon(
                       Icons.camera_alt,
                       size: 25,
                       color: purpleColor,
@@ -252,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: BoxDecoration(
                         color: Colors.grey.withOpacity(0.2),
                         shape: BoxShape.circle),
-                    child: Center(
+                    child: const Center(
                       child: Icon(Icons.photo),
                     ),
                   ),
@@ -270,8 +281,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       source: ImageSource.gallery,
     );
     file = File(imageFile!.path);
-    String fileName = file!.path.split('/').last;
-    print("This is the path of file ============" + file.toString());
+    if (kDebugMode) {
+      print("This is the path of file ============$file");
+    }
     if (file != null) {
       EasyLoading.show(status: "Loading..");
       uploadFile();
@@ -285,7 +297,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final imageFile = await ImagePicker().getImage(source: ImageSource.camera);
 
     file = File(imageFile!.path);
-    String fileName = file!.path.split('/').last;
     if (file != null) {
       EasyLoading.show(status: "Loading..");
       uploadFile();

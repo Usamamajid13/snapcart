@@ -1,7 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:snapcart/Constants/constants.dart';
@@ -31,7 +28,7 @@ class _QrScannerState extends State<QrScanner> {
       body: Column(
         children: <Widget>[
           Expanded(flex: 4, child: _buildQrView(context)),
-          SizedBox(
+          const SizedBox(
             height: 100,
           ),
           Column(
@@ -84,7 +81,7 @@ class _QrScannerState extends State<QrScanner> {
                       child: FutureBuilder(
                         future: controller?.getFlashStatus(),
                         builder: (context, snapshot) {
-                          return Icon(
+                          return const Icon(
                             Icons.flashlight_on,
                             color: Colors.white,
                             size: 40,
@@ -97,7 +94,7 @@ class _QrScannerState extends State<QrScanner> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 100,
           ),
         ],

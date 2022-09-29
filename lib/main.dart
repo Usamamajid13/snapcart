@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:snapcart/MainScreen/multiple_bill_screen.dart';
+import 'package:snapcart/MainScreen/bill_screen.dart';
 
 import 'Authentication/catalog_screen.dart';
 import 'Authentication/forgot_password.dart';

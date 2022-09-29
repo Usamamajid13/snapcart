@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../AuthController/auth_controller.dart';
 import '../Constants/constants.dart';
@@ -224,7 +225,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     EasyLoading.show(status: "Loading...");
     Authentication()
         .signUp(email: _email.toString(), password: _password.toString())
-        .then((result) {
+        .then((result) async {
       if (result == null) {
         FirebaseFirestore.instance
             .collection("users")
@@ -235,6 +236,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "name": _name,
           "date": DateTime.now().millisecondsSinceEpoch,
         });
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("currentUserEmail", _email.toString());
         EasyLoading.showSuccess("Sign Up Successful");
         Navigator.pushNamed(context, uploadProfilePictureScreenRoute,
             arguments: _email);

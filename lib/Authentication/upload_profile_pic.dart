@@ -1,12 +1,15 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snapcart/Constants/constants.dart';
 import 'package:snapcart/Utils/app_utils.dart';
 
@@ -56,7 +59,7 @@ class _UploadProfilePictureScreenState
                 child: Container(
                     height: 120,
                     width: 120,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: purpleColor,
                       shape: BoxShape.circle,
                     ),
@@ -114,13 +117,17 @@ class _UploadProfilePictureScreenState
 
     final snapshot = await task!.whenComplete(() {});
     urlDownload = await snapshot.ref.getDownloadURL();
-    print("Url == == ===  == " + urlDownload.toString());
+    if (kDebugMode) {
+      print("Url == == ===  == $urlDownload");
+    }
     FirebaseFirestore.instance
         .collection("profilePictures")
         .doc(widget.email)
         .set({
       "profilePicture": urlDownload,
     });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("currentUserEmail", widget.email.toString());
   }
 
   dialogBox(context) async {
@@ -128,7 +135,7 @@ class _UploadProfilePictureScreenState
       context: context,
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
-          title: Center(child: const Text('Choose your option')),
+          title: const Center(child: Text('Choose your option')),
           content: Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: Row(
@@ -144,7 +151,7 @@ class _UploadProfilePictureScreenState
                     decoration: BoxDecoration(
                         color: Colors.grey.withOpacity(0.2),
                         shape: BoxShape.circle),
-                    child: Icon(
+                    child: const Icon(
                       Icons.camera_alt,
                       size: 25,
                       color: purpleColor,
@@ -161,7 +168,7 @@ class _UploadProfilePictureScreenState
                     decoration: BoxDecoration(
                         color: Colors.grey.withOpacity(0.2),
                         shape: BoxShape.circle),
-                    child: Center(
+                    child: const Center(
                       child: Icon(Icons.photo),
                     ),
                   ),
@@ -179,8 +186,9 @@ class _UploadProfilePictureScreenState
       source: ImageSource.gallery,
     );
     file = File(imageFile!.path);
-    String fileName = file!.path.split('/').last;
-    print("This is the path of file ============" + file.toString());
+    if (kDebugMode) {
+      print("This is the path of file ============$file");
+    }
     if (file != null) {
       EasyLoading.show(status: "Loading..");
       uploadFile();
@@ -194,7 +202,6 @@ class _UploadProfilePictureScreenState
     final imageFile = await ImagePicker().getImage(source: ImageSource.camera);
 
     file = File(imageFile!.path);
-    String fileName = file!.path.split('/').last;
     if (file != null) {
       EasyLoading.show(status: "Loading..");
       uploadFile();
@@ -213,7 +220,7 @@ Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
           final progress = snap.bytesTransferred / snap.totalBytes;
           final percentage = (progress * 100).toStringAsFixed(2);
           return Text(
-            percentage == "100.00" ? "Uploaded" : percentage + "%",
+            percentage == "100.00" ? "Uploaded" : "$percentage%",
             style: TextStyle(
                 color: Colors.white,
                 fontSize: percentage == "100.00" ? 16 : 16,

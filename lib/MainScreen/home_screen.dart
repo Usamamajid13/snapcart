@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snapcart/AuthController/auth_controller.dart';
@@ -16,41 +15,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Items item1 = Items(
-      title: "Calendar",
-      subtitle: "March, Wednesday",
-      event: "3 Events",
-      img: "assets/calendar.png");
-
-  Items item2 = Items(
-    title: "Groceries",
-    subtitle: "Bocali, Apple",
-    event: "4 Items",
-    img: "assets/food.png",
-  );
-  Items item3 = Items(
-    title: "Locations",
-    subtitle: "Lucy Mao going to Office",
-    event: "",
-    img: "assets/map.png",
-  );
+  Items item1 = Items(title: "Eggs", event: "\$10.00", img: "assets/eggs.png");
+  Items item2 =
+      Items(title: "Bread", event: "\$20.00", img: "assets/bread.png");
+  Items item3 =
+      Items(title: "Drinks", event: "\$20.00", img: "assets/drink.png");
   Items item4 = Items(
-    title: "Activity",
-    subtitle: "Rose favirited your Post",
-    event: "",
-    img: "assets/festival.png",
-  );
-  Items item5 = Items(
-    title: "To do",
-    subtitle: "Homework, Design",
-    event: "4 Items",
-    img: "assets/todo.png",
-  );
-  Items item6 = Items(
-    title: "Settings",
-    subtitle: "",
-    event: "2 Items",
-    img: "assets/setting.png",
+    title: "Food Deals",
+    event: "\$30.00",
+    img: "assets/burger.png",
   );
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
@@ -65,17 +38,27 @@ class _HomeScreenState extends State<HomeScreen> {
   String? pic;
   getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     var user = prefs.getString("currentUserEmail");
+    if (kDebugMode) {
+      print(user);
+    }
     FirebaseFirestore.instance
         .collection("users")
         .doc(user)
         .get()
         .then((value) {
-      print(value.data());
+      if (kDebugMode) {
+        print(value.data());
+      }
       name = value.data()!["name"];
       email = value.data()!["email"];
-      print(name);
-      print(email);
+      if (kDebugMode) {
+        print(name);
+      }
+      if (kDebugMode) {
+        print(email);
+      }
       setState(() {});
     });
     FirebaseFirestore.instance
@@ -83,7 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
         .doc(user)
         .get()
         .then((value) {
-      print(value.data());
+      if (kDebugMode) {
+        print(value.data());
+      }
       pic = value.data()!["profilePicture"];
 
       setState(() {});
@@ -92,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Items> myList = [item1, item2, item3, item4, item5, item6];
+    List<Items> myList = [item1, item2, item3, item4];
     return Scaffold(
       backgroundColor: Colors.black,
       key: _key,
@@ -123,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text(name ?? "Loading..."),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: purpleColor,
               ),
               accountEmail: Text(email ?? "Loading.."),
@@ -131,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.white,
                 child: Text(
                   name.toString()[0] == null ? "Loading.." : name.toString()[0],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 40.0,
                     color: purpleColor,
                   ),
@@ -216,8 +201,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 Authentication().signOut();
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.clear();
                 Navigator.pushNamedAndRemoveUntil(
                     context, loginScreenRoute, (route) => false);
               },
@@ -249,8 +236,8 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Hi $name",
-                  style: TextStyle(color: Colors.white, fontSize: 19),
+                  "Hi ${name == null ? "User" : name}",
+                  style: const TextStyle(color: Colors.white, fontSize: 19),
                 ),
                 pic != null
                     ? Container(
@@ -270,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     : Container(
                         width: 30,
                         height: 30,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage("assets/account.png"),
                             fit: BoxFit.cover,
@@ -318,6 +305,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Your Total Expenses",
+                  style: TextStyle(color: Colors.white, fontSize: 19),
+                ),
+                Container(),
+              ],
+            ),
+            const SizedBox(
               height: 20,
             ),
             Expanded(
@@ -346,12 +346,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(
                             height: 8,
-                          ),
-                          Text(
-                            data.subtitle!,
-                          ),
-                          const SizedBox(
-                            height: 14,
                           ),
                           Text(
                             data.event!,

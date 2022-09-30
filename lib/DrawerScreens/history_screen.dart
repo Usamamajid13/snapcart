@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Constants/constants.dart';
+import '../Model/single_product_model.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({Key? key}) : super(key: key);
@@ -136,8 +137,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         for (int i = 0; i < lengthOfHistory!; i++)
                           GestureDetector(
                             onTap: () {
+                              var details = SingleProductHistory(
+                                date: DateFormat('dd MMMM, yyyy').format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        bills[i]["date"])),
+                                totalBill: "\$${bills[i]["totalBill"]}",
+                                type: "Single Product Purchase",
+                                key: bills[i].toString().contains("bread")
+                                    ? "Bread"
+                                    : bills[i].toString().contains("drink")
+                                        ? "Drink"
+                                        : bills[i].toString().contains("eggs")
+                                            ? "Eggs"
+                                            : "Meal",
+                              );
                               Navigator.pushNamed(
-                                  context, historyDetailScreenRoute);
+                                  context, historyDetailScreenRoute,
+                                  arguments: details);
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 10),

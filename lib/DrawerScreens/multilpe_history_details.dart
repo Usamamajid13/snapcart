@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:snapcart/Model/single_product_model.dart';
+import 'package:snapcart/Model/multiple_product_history.dart';
+
 import '../Utils/app_utils.dart';
 
-class HistoryDetailScreen extends StatefulWidget {
+class MultipleHistoryDetailsScreen extends StatefulWidget {
   var details;
-  HistoryDetailScreen(this.details, {Key? key}) : super(key: key);
+  MultipleHistoryDetailsScreen(this.details, {Key? key}) : super(key: key);
 
   @override
-  State<HistoryDetailScreen> createState() => _HistoryDetailScreenState();
+  State<MultipleHistoryDetailsScreen> createState() =>
+      _MultipleHistoryDetailsScreenState();
 }
 
-class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
+class _MultipleHistoryDetailsScreenState
+    extends State<MultipleHistoryDetailsScreen> {
   var utils = AppUtils();
-  SingleProductHistory? singleProductHistory;
+  MultipleProductHistory? multipleProductHistory;
   @override
   void initState() {
-    singleProductHistory = widget.details!;
+    multipleProductHistory = widget.details!;
     super.initState();
   }
 
@@ -47,7 +50,7 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
                       "Type",
                     ),
                     Text(
-                      singleProductHistory!.type.toString(),
+                      multipleProductHistory!.type.toString(),
                     ),
                   ],
                 ),
@@ -61,7 +64,63 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
                       "Date",
                     ),
                     Text(
-                      singleProductHistory!.date.toString(),
+                      multipleProductHistory!.date.toString(),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Bread Bill",
+                    ),
+                    Text(
+                      multipleProductHistory!.bread.toString(),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Drink Bill",
+                    ),
+                    Text(
+                      multipleProductHistory!.drink.toString(),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Eggs Bill",
+                    ),
+                    Text(
+                      multipleProductHistory!.eggs.toString(),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Food Deals Bill",
+                    ),
+                    Text(
+                      multipleProductHistory!.meals.toString(),
                     ),
                   ],
                 ),
@@ -75,21 +134,7 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
                       "Total Bill",
                     ),
                     Text(
-                      singleProductHistory!.totalBill.toString(),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Product",
-                    ),
-                    Text(
-                      singleProductHistory!.key.toString(),
+                      multipleProductHistory!.totalBill.toString(),
                     ),
                   ],
                 ),

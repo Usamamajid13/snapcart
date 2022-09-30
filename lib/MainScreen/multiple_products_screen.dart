@@ -144,7 +144,7 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
                         Text(
                           breadBill.toString(),
                         ),
-                        Text("Total Bread"),
+                        const Text("Total Bread"),
                       ],
                     ),
                     rightChild: Image.asset(
@@ -166,7 +166,7 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
                         Text(
                           drinksBill.toString(),
                         ),
-                        Text("Total Drinks"),
+                        const Text("Total Drinks"),
                       ],
                     ),
                     rightChild: Image.asset(
@@ -188,7 +188,7 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
                         Text(
                           mealsBill.toString(),
                         ),
-                        Text("Total Meals"),
+                        const Text("Total Meals"),
                       ],
                     ),
                     rightChild: Image.asset(
@@ -210,7 +210,7 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
                         Text(
                           eggsBill.toString(),
                         ),
-                        Text("Total Eggs"),
+                        const Text("Total Eggs"),
                       ],
                     ),
                     rightChild: Image.asset(
@@ -237,7 +237,7 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
               rightChild: const Icon(Icons.emoji_food_beverage_rounded),
             ),
           ),
-          Spacer(),
+          const Spacer(),
           GestureDetector(
             onTap: () {
               uploadBill();

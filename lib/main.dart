@@ -14,6 +14,7 @@ import 'Authentication/upload_profile_pic.dart';
 import 'Constants/constants.dart';
 import 'DrawerScreens/history_detail_screen.dart';
 import 'DrawerScreens/mulitple_history_screen.dart';
+import 'DrawerScreens/multilpe_history_details.dart';
 import 'MainScreen/double_qr_scanner.dart';
 import 'MainScreen/home_screen.dart';
 import 'DrawerScreens/privacy_screen.dart';
@@ -82,8 +83,15 @@ class _MyAppState extends State<MyApp> {
         privacyScreenRoute: (context) => const PrivacyScreen(),
         termsAndConditionsScreenRoute: (context) => const TermsAndConditions(),
         historyScreenRoute: (context) => const HistoryScreen(),
+        multipleHistoryDetailsScreenRoute: (context) {
+          var i = ModalRoute.of(context)!.settings.arguments;
+          return MultipleHistoryDetailsScreen(i);
+        },
         multipleHistoryScreenRoute: (context) => const MultipleHistoryScreen(),
-        historyDetailScreenRoute: (context) => const HistoryDetailScreen(),
+        historyDetailScreenRoute: (context) {
+          var i = ModalRoute.of(context)!.settings.arguments;
+          return HistoryDetailScreen(i);
+        },
         profileScreenRoute: (context) => const ProfileScreen(),
         qrScanScreenRoute: (context) => const QrScanner(),
         doubleScannerScreenRoute: (context) => const DoubleQrScanner(),

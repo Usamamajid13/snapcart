@@ -22,6 +22,7 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: const Color(0xff966FD6),
@@ -45,9 +46,15 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
                   children: [
                     const Text(
                       "Type",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                     Text(
                       singleProductHistory!.type.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
@@ -59,9 +66,15 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
                   children: [
                     const Text(
                       "Date",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                     Text(
                       singleProductHistory!.date.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
@@ -73,9 +86,15 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
                   children: [
                     const Text(
                       "Total Bill",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                     Text(
                       singleProductHistory!.totalBill.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
@@ -87,9 +106,15 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
                   children: [
                     const Text(
                       "Product",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                     Text(
                       singleProductHistory!.key.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),

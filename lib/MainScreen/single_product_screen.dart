@@ -187,27 +187,28 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Center(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.qr_code_scanner,
-                    color: purpleColor,
-                    size: 20,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "Scan More",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.qr_code_scanner,
+                      color: purpleColor,
+                      size: 20,
                     ),
-                  ),
-                ],
-              )),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Scan More",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],

@@ -67,6 +67,10 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
   double drinksBill = 0;
   double mealsBill = 0;
   double eggsBill = 0;
+  double flourBill = 0;
+  double riceBill = 0;
+  double chocolateBill = 0;
+  double biscuitsBill = 0;
 
   calculateTotalBill() {
     for (int i = 0; i < listOfBills.length; i++) {
@@ -107,6 +111,44 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
           qrValues[listOfBills[i]] == "24 Eggs" ||
           qrValues[listOfBills[i]] == "12 Eggs") {
         eggsBill = eggsBill +
+            double.parse(
+                listOfBills[i].toString().replaceAll('\$', "").toString());
+      }
+    }
+    for (int i = 0; i < listOfBills.length; i++) {
+      if (qrValues[listOfBills[i]] == "1 Bag Flour" ||
+          qrValues[listOfBills[i]] == "2 Bag Flour") {
+        flourBill = flourBill +
+            double.parse(
+                listOfBills[i].toString().replaceAll('\$', "").toString());
+      }
+    }
+
+    for (int i = 0; i < listOfBills.length; i++) {
+      if (qrValues[listOfBills[i]] == "1 Bag Rice" ||
+          qrValues[listOfBills[i]] == "2 Bag Rice" ||
+          qrValues[listOfBills[i]] == "3 Bag Rice") {
+        riceBill = riceBill +
+            double.parse(
+                listOfBills[i].toString().replaceAll('\$', "").toString());
+      }
+    }
+
+    for (int i = 0; i < listOfBills.length; i++) {
+      if (qrValues[listOfBills[i]] == "1 Biscuits" ||
+          qrValues[listOfBills[i]] == "2 Biscuits" ||
+          qrValues[listOfBills[i]] == "3 Biscuits") {
+        biscuitsBill = biscuitsBill +
+            double.parse(
+                listOfBills[i].toString().replaceAll('\$', "").toString());
+      }
+    }
+
+    for (int i = 0; i < listOfBills.length; i++) {
+      if (qrValues[listOfBills[i]] == "1 Chocolate Bar" ||
+          qrValues[listOfBills[i]] == "2 Chocolate Bars" ||
+          qrValues[listOfBills[i]] == "3 Chocolate Bars") {
+        chocolateBill = chocolateBill +
             double.parse(
                 listOfBills[i].toString().replaceAll('\$', "").toString());
       }
@@ -220,6 +262,94 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
                   ),
                 )
               : Container(),
+          flourBill != 0.0
+              ? Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: TicketMaterial(
+                    height: 50,
+                    colorBackground: purpleColor,
+                    leftChild: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          flourBill.toString(),
+                        ),
+                        const Text("Total Flour Bags"),
+                      ],
+                    ),
+                    rightChild: Image.asset(
+                      "assets/flour.png",
+                      scale: 14,
+                    ),
+                  ),
+                )
+              : Container(),
+          riceBill != 0.0
+              ? Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: TicketMaterial(
+                    height: 50,
+                    colorBackground: purpleColor,
+                    leftChild: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          riceBill.toString(),
+                        ),
+                        const Text("Total Rice Bags"),
+                      ],
+                    ),
+                    rightChild: Image.asset(
+                      "assets/rice.png",
+                      scale: 14,
+                    ),
+                  ),
+                )
+              : Container(),
+          chocolateBill != 0.0
+              ? Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: TicketMaterial(
+                    height: 50,
+                    colorBackground: purpleColor,
+                    leftChild: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          chocolateBill.toString(),
+                        ),
+                        const Text("Total Chocolates"),
+                      ],
+                    ),
+                    rightChild: Image.asset(
+                      "assets/chocolate.png",
+                      scale: 14,
+                    ),
+                  ),
+                )
+              : Container(),
+          biscuitsBill != 0.0
+              ? Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: TicketMaterial(
+                    height: 50,
+                    colorBackground: purpleColor,
+                    leftChild: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          biscuitsBill.toString(),
+                        ),
+                        const Text("Total Biscuits"),
+                      ],
+                    ),
+                    rightChild: Image.asset(
+                      "assets/biscuits.png",
+                      scale: 14,
+                    ),
+                  ),
+                )
+              : Container(),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 5),
             child: TicketMaterial(
@@ -322,6 +452,10 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
     var drink;
     var meals;
     var eggs;
+    var rice;
+    var flour;
+    var chocolate;
+    var biscuits;
     if (kDebugMode) {
       print(widget.scannedBill.toString().replaceAll("\$", ""));
     }
@@ -335,6 +469,10 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
       drink = value["drink"];
       meals = value["meals"];
       eggs = value["eggs"];
+      rice = value["rice"];
+      flour = value["flour"];
+      chocolate = value["chocolate"];
+      biscuits = value["biscuits"];
     });
 
     FirebaseFirestore.instance
@@ -349,17 +487,29 @@ class _MultipleProductsScreenState extends State<MultipleProductsScreen> {
       "drink": drinksBill,
       "meals": mealsBill,
       "eggs": eggsBill,
+      "biscuits": biscuitsBill,
+      "flour": flourBill,
+      "rice": riceBill,
+      "chocolate": chocolateBill,
     });
     bread = bread + breadBill;
     drink = drink + drinksBill;
     meals = meals + mealsBill;
     eggs = eggs + eggsBill;
+    rice = rice + riceBill;
+    chocolate = chocolate + chocolateBill;
+    flour = flour + flourBill;
+    biscuits = biscuits + biscuitsBill;
 
     FirebaseFirestore.instance.collection("FoodItems").doc(email).set({
       "bread": bread,
       "drink": drink,
       "meals": meals,
       "eggs": eggs,
+      "flour": flour,
+      "biscuits": biscuits,
+      "rice": rice,
+      "chocolate": chocolate,
     }).then((value) {
       prefs.remove("bills");
       EasyLoading.showSuccess("Bill Saved Successfully!");

@@ -62,7 +62,7 @@ class _MultipleHistoryDetailsScreenState
                   ],
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,7 +82,7 @@ class _MultipleHistoryDetailsScreenState
                   ],
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,7 +102,7 @@ class _MultipleHistoryDetailsScreenState
                   ],
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,7 +122,7 @@ class _MultipleHistoryDetailsScreenState
                   ],
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,7 +142,7 @@ class _MultipleHistoryDetailsScreenState
                   ],
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,7 +162,87 @@ class _MultipleHistoryDetailsScreenState
                   ],
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Flour Bill",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      multipleProductHistory!.flour.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Biscuits Bill",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      multipleProductHistory!.biscuits.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Chocolates Bill",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      multipleProductHistory!.chocolates.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Rice Bill",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      multipleProductHistory!.rice.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

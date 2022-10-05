@@ -147,6 +147,10 @@ class _MultipleHistoryScreenState extends State<MultipleHistoryScreen> {
                                 eggs: "\$${bills[i]["eggs"]}",
                                 drink: "\$${bills[i]["drink"]}",
                                 meals: "\$${bills[i]["meals"]}",
+                                biscuits: "\$${bills[i]["biscuits"]}",
+                                chocolates: "\$${bills[i]["chocolate"]}",
+                                flour: "\$${bills[i]["flour"]}",
+                                rice: "\$${bills[i]["rice"]}",
                               );
                               Navigator.pushNamed(
                                   context, multipleHistoryDetailsScreenRoute,

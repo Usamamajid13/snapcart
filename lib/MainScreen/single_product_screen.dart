@@ -90,7 +90,31 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                                 qrValues[widget.scannedBill] ==
                                     "2.25 Litre Drink"
                             ? "assets/drink.png"
-                            : "assets/eggs.png",
+                            : qrValues[widget.scannedBill] == "1 Biscuits" ||
+                                    qrValues[widget.scannedBill] ==
+                                        "2 Biscuits" ||
+                                    qrValues[widget.scannedBill] == "3 Biscuits"
+                                ? "assets/biscuits.png"
+                                : qrValues[widget.scannedBill] ==
+                                            "1 Chocolate Bar" ||
+                                        qrValues[widget.scannedBill] ==
+                                            "2 Chocolate Bars" ||
+                                        qrValues[widget.scannedBill] ==
+                                            "3 Chocolate Bars"
+                                    ? "assets/chocolate.png"
+                                    : qrValues[widget.scannedBill] ==
+                                                "1 Bag Rice" ||
+                                            qrValues[widget.scannedBill] ==
+                                                "2 Bag Rice" ||
+                                            qrValues[widget.scannedBill] ==
+                                                "3 Bag Rice"
+                                        ? "assets/rice.png"
+                                        : qrValues[widget.scannedBill] ==
+                                                    "1 Bag Flour" ||
+                                                qrValues[widget.scannedBill] ==
+                                                    "2 Bag Flour"
+                                            ? "assets/flour.png"
+                                            : "assets/eggs.png",
                 scale: 14,
               ),
             ),
@@ -198,6 +222,10 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
     var drink;
     var meals;
     var eggs;
+    var biscuits;
+    var flour;
+    var rice;
+    var chocolate;
     if (kDebugMode) {
       print(widget.scannedBill.toString().replaceAll("\$", ""));
     }
@@ -211,16 +239,12 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
       drink = value["drink"];
       meals = value["meals"];
       eggs = value["eggs"];
+      biscuits = value["biscuits"];
+      flour = value["flour"];
+      rice = value["rice"];
+      chocolate = value["chocolate"];
     });
 
-    if (kDebugMode) {
-      print({
-        "bread": bread,
-        "drink": drink,
-        "meals": meals,
-        "eggs": eggs,
-      });
-    }
     if (qrValues[widget.scannedBill] == "Medium Bread" ||
         qrValues[widget.scannedBill] == "Small Bread" ||
         qrValues[widget.scannedBill] == "Large Bread") {
@@ -271,6 +295,72 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
         "drink":
             double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
       });
+    } else if (qrValues[widget.scannedBill] == "1 Biscuits" ||
+        qrValues[widget.scannedBill] == "2 Biscuits" ||
+        qrValues[widget.scannedBill] == "3 Biscuits") {
+      biscuits = biscuits +
+          double.parse(
+              widget.scannedBill.toString().replaceAll('\$', "").toString());
+      FirebaseFirestore.instance
+          .collection("Bills")
+          .doc(email)
+          .collection("myBills")
+          .add({
+        "date": DateTime.now().millisecondsSinceEpoch,
+        "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
+        "email": email,
+        "biscuits":
+            double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
+      });
+    } else if (qrValues[widget.scannedBill] == "1 Chocolate Bar" ||
+        qrValues[widget.scannedBill] == "2 Chocolate Bars" ||
+        qrValues[widget.scannedBill] == "3 Chocolate Bars") {
+      chocolate = chocolate +
+          double.parse(
+              widget.scannedBill.toString().replaceAll('\$', "").toString());
+      FirebaseFirestore.instance
+          .collection("Bills")
+          .doc(email)
+          .collection("myBills")
+          .add({
+        "date": DateTime.now().millisecondsSinceEpoch,
+        "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
+        "email": email,
+        "chocolate":
+            double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
+      });
+    } else if (qrValues[widget.scannedBill] == "1 Bag Flour" ||
+        qrValues[widget.scannedBill] == "2 Bag Flour") {
+      flour = flour +
+          double.parse(
+              widget.scannedBill.toString().replaceAll('\$', "").toString());
+      FirebaseFirestore.instance
+          .collection("Bills")
+          .doc(email)
+          .collection("myBills")
+          .add({
+        "date": DateTime.now().millisecondsSinceEpoch,
+        "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
+        "email": email,
+        "flour":
+            double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
+      });
+    } else if (qrValues[widget.scannedBill] == "1 Bag Rice" ||
+        qrValues[widget.scannedBill] == "2 Bag Rice" ||
+        qrValues[widget.scannedBill] == "3 Bag Rice") {
+      rice = rice +
+          double.parse(
+              widget.scannedBill.toString().replaceAll('\$', "").toString());
+      FirebaseFirestore.instance
+          .collection("Bills")
+          .doc(email)
+          .collection("myBills")
+          .add({
+        "date": DateTime.now().millisecondsSinceEpoch,
+        "totalBill": widget.scannedBill.toString().replaceAll("\$", ""),
+        "email": email,
+        "rice": double.parse(widget.scannedBill.toString().replaceAll('\$', ""))
+      });
     } else {
       FirebaseFirestore.instance
           .collection("Bills")
@@ -299,6 +389,10 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
       "drink": drink,
       "meals": meals,
       "eggs": eggs,
+      "rice": rice,
+      "flour": flour,
+      "chocolate": chocolate,
+      "biscuits": biscuits,
     }).then((value) {
       EasyLoading.showSuccess("Bill Saved Successfully!");
       Navigator.pushReplacementNamed(context, homeScreenRoute);

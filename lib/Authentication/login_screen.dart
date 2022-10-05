@@ -186,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     EasyLoading.show(status: "Loading...");
     Authentication()
-        .signIn(email: _email.toString(), password: _password.toString())
+        .signIn(email: _email.toString().trim(), password: _password.toString())
         .then((result) async {
       if (result == null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();

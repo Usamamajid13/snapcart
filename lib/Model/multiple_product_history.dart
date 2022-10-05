@@ -6,12 +6,20 @@ class MultipleProductHistory {
   String? meals;
   String? drink;
   String? eggs;
+  String? flour;
+  String? rice;
+  String? biscuits;
+  String? chocolates;
 
   MultipleProductHistory(
       {this.totalBill,
       this.type,
       this.date,
       this.bread,
+      this.rice,
+      this.flour,
+      this.chocolates,
+      this.biscuits,
       this.meals,
       this.drink,
       this.eggs});
@@ -21,8 +29,12 @@ class MultipleProductHistory {
     type = json['type'];
     date = json['date'];
     bread = json['bread'];
+    biscuits = json['biscuits'];
     meals = json['meals'];
     drink = json['drink'];
+    rice = json['rice'];
+    chocolates = json['chocolates'];
+    flour = json['flour'];
     eggs = json['eggs'];
   }
 
@@ -33,7 +45,11 @@ class MultipleProductHistory {
     data['date'] = date;
     data['bread'] = bread;
     data['meals'] = meals;
+    data['flour'] = flour;
     data['drink'] = drink;
+    data['rice'] = rice;
+    data['chocolates'] = chocolates;
+    data['biscuits'] = biscuits;
     data['eggs'] = eggs;
     return data;
   }

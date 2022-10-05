@@ -149,7 +149,24 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         ? "Drink"
                                         : bills[i].toString().contains("eggs")
                                             ? "Eggs"
-                                            : "Meal",
+                                            : bills[i]
+                                                    .toString()
+                                                    .contains("chocolate")
+                                                ? "Chocolate"
+                                                : bills[i]
+                                                        .toString()
+                                                        .contains("rice")
+                                                    ? "Rice"
+                                                    : bills[i]
+                                                            .toString()
+                                                            .contains("flour")
+                                                        ? "Flour"
+                                                        : bills[i]
+                                                                .toString()
+                                                                .contains(
+                                                                    "biscuits")
+                                                            ? "Biscuits"
+                                                            : "Meal",
                               );
                               Navigator.pushNamed(
                                   context, historyDetailScreenRoute,

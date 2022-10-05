@@ -241,6 +241,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "drink": 0.00,
           "meals": 0.00,
           "eggs": 0.00,
+          "rice": 0.00,
+          "flour": 0.00,
+          "chocolate": 0.00,
+          "biscuits": 0.00,
         });
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("currentUserEmail", _email.toString());

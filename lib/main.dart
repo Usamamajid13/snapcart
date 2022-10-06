@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:snapcart/MainScreen/single_product_screen.dart';
 import 'package:snapcart/MainScreen/multiple_products_screen.dart';
-
 import 'Authentication/catalog_screen.dart';
 import 'Authentication/forgot_password.dart';
 import 'Authentication/login_screen.dart';

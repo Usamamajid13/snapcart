@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,7 +26,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   List bills = [];
   int? lengthOfHistory;
+  List docs = [];
+
   getMyHistory() async {
+    bills.clear();
+    docs.clear();
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var user = prefs.getString("currentUserEmail");
@@ -38,6 +43,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       lengthOfHistory = value.docs.length;
       for (int i = 0; i < value.docs.length; i++) {
         bills.add(value.docs[i].data());
+        docs.add(value.docs[i].id);
       }
       setState(() {});
     });
@@ -132,94 +138,143 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         ),
                       ],
                     )
-                  : Column(
-                      children: [
-                        for (int i = 0; i < lengthOfHistory!; i++)
-                          GestureDetector(
-                            onTap: () {
-                              var details = SingleProductHistory(
-                                date: DateFormat('dd MMMM, yyyy').format(
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        bills[i]["date"])),
-                                totalBill: "\$${bills[i]["totalBill"]}",
-                                type: "Single Product Purchase",
-                                key: bills[i].toString().contains("bread")
-                                    ? "Bread"
-                                    : bills[i].toString().contains("drink")
-                                        ? "Drink"
-                                        : bills[i].toString().contains("eggs")
-                                            ? "Eggs"
+                  : docs.isEmpty
+                      ? Center(
+                          child: Text(
+                            "No Documents Available",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : Column(
+                          children: [
+                            for (int i = 0; i < lengthOfHistory!; i++)
+                              GestureDetector(
+                                onTap: () {
+                                  var details = SingleProductHistory(
+                                    date: DateFormat('dd MMMM, yyyy').format(
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                            bills[i]["date"])),
+                                    totalBill: "\$${bills[i]["totalBill"]}",
+                                    type: "Single Product Purchase",
+                                    key: bills[i].toString().contains("bread")
+                                        ? "Bread"
+                                        : bills[i].toString().contains("drink")
+                                            ? "Drink"
                                             : bills[i]
                                                     .toString()
-                                                    .contains("chocolate")
-                                                ? "Chocolate"
+                                                    .contains("eggs")
+                                                ? "Eggs"
                                                 : bills[i]
                                                         .toString()
-                                                        .contains("rice")
-                                                    ? "Rice"
+                                                        .contains("chocolate")
+                                                    ? "Chocolate"
                                                     : bills[i]
                                                             .toString()
-                                                            .contains("flour")
-                                                        ? "Flour"
+                                                            .contains("rice")
+                                                        ? "Rice"
                                                         : bills[i]
                                                                 .toString()
                                                                 .contains(
-                                                                    "biscuits")
-                                                            ? "Biscuits"
-                                                            : "Meal",
-                              );
-                              Navigator.pushNamed(
-                                  context, historyDetailScreenRoute,
-                                  arguments: details);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              height: 70,
-                              decoration: BoxDecoration(
-                                color: purpleColor,
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              width: MediaQuery.of(context).size.width,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                                                    "flour")
+                                                            ? "Flour"
+                                                            : bills[i]
+                                                                    .toString()
+                                                                    .contains(
+                                                                        "biscuits")
+                                                                ? "Biscuits"
+                                                                : "Meal",
+                                  );
+                                  Navigator.pushNamed(
+                                      context, historyDetailScreenRoute,
+                                      arguments: details);
+                                },
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                    color: purpleColor,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        "Record ${i + 1}",
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                        ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            "Record ${i + 1}",
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          Text(
+                                            DateFormat('dd MMMM, yyyy').format(
+                                                DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                        bills[i]["date"])),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        DateFormat('dd MMMM, yyyy').format(
-                                            DateTime.fromMillisecondsSinceEpoch(
-                                                bills[i]["date"])),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
+                                      // Text("13",
+                                      Row(
+                                        children: [
+                                          Text("\$${bills[i]["totalBill"]}",
+                                              style: const TextStyle(
+                                                  color: Colors.white)),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              print("deleting");
+                                              SharedPreferences prefs =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              var user = prefs.getString(
+                                                  "currentUserEmail");
+                                              print(docs[i]);
+                                              print(user);
+                                              var a = FirebaseFirestore.instance
+                                                  .collection("Bills")
+                                                  .doc(user)
+                                                  .collection("myBills")
+                                                  .doc(docs[i])
+                                                  .delete()
+                                                  .then((value) {
+                                                EasyLoading.showSuccess(
+                                                    "Deleted!");
+                                              });
+                                              print(a.toString());
+                                              getMyHistory();
+                                            },
+                                            child: Icon(
+                                              Icons.delete,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                  // Text("13",
-                                  Text("\$${bills[i]["totalBill"]}",
-                                      style:
-                                          const TextStyle(color: Colors.white)),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                      ],
-                    )
+                          ],
+                        )
             ],
           ),
         ),

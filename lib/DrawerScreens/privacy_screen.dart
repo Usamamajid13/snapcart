@@ -19,11 +19,11 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
         elevation: 10.0,
       ),
       body: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: const [
               Text(
                 "Please read these terms and conditions carefully operated by Snap Cart  ",
                 style: TextStyle(color: Colors.white, fontSize: 17),

@@ -24,8 +24,11 @@ class _MultipleHistoryScreenState extends State<MultipleHistoryScreen> {
   }
 
   List bills = [];
+  List docs = [];
   int? lengthOfHistory;
   getMyHistory() async {
+    bills.clear();
+    docs.clear();
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var user = prefs.getString("currentUserEmail");
@@ -38,6 +41,7 @@ class _MultipleHistoryScreenState extends State<MultipleHistoryScreen> {
       lengthOfHistory = value.docs.length;
       for (int i = 0; i < value.docs.length; i++) {
         bills.add(value.docs[i].data());
+        docs.add(value.docs[i].id);
       }
       setState(() {});
     });
@@ -132,78 +136,116 @@ class _MultipleHistoryScreenState extends State<MultipleHistoryScreen> {
                         ),
                       ],
                     )
-                  : Column(
-                      children: [
-                        for (int i = 0; i < lengthOfHistory!; i++)
-                          GestureDetector(
-                            onTap: () {
-                              var details = MultipleProductHistory(
-                                date: DateFormat('dd MMMM, yyyy').format(
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        bills[i]["date"])),
-                                totalBill: "\$${bills[i]["totalBill"]}",
-                                type: "Multiple Product Purchase",
-                                bread: "\$${bills[i]["bread"]}",
-                                eggs: "\$${bills[i]["eggs"]}",
-                                drink: "\$${bills[i]["drink"]}",
-                                meals: "\$${bills[i]["meals"]}",
-                                biscuits: "\$${bills[i]["biscuits"]}",
-                                chocolates: "\$${bills[i]["chocolate"]}",
-                                flour: "\$${bills[i]["flour"]}",
-                                rice: "\$${bills[i]["rice"]}",
-                              );
-                              Navigator.pushNamed(
-                                  context, multipleHistoryDetailsScreenRoute,
-                                  arguments: details);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              height: 70,
-                              decoration: BoxDecoration(
-                                color: purpleColor,
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              width: MediaQuery.of(context).size.width,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                  : docs.isEmpty
+                      ? Center(
+                          child: Text(
+                            "No Documents Available",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : Column(
+                          children: [
+                            for (int i = 0; i < lengthOfHistory!; i++)
+                              GestureDetector(
+                                onTap: () {
+                                  var details = MultipleProductHistory(
+                                    date: DateFormat('dd MMMM, yyyy').format(
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                            bills[i]["date"])),
+                                    totalBill: "\$${bills[i]["totalBill"]}",
+                                    type: "Multiple Product Purchase",
+                                    bread: "\$${bills[i]["bread"]}",
+                                    eggs: "\$${bills[i]["eggs"]}",
+                                    drink: "\$${bills[i]["drink"]}",
+                                    meals: "\$${bills[i]["meals"]}",
+                                    biscuits: "\$${bills[i]["biscuits"]}",
+                                    chocolates: "\$${bills[i]["chocolate"]}",
+                                    flour: "\$${bills[i]["flour"]}",
+                                    rice: "\$${bills[i]["rice"]}",
+                                  );
+                                  Navigator.pushNamed(context,
+                                      multipleHistoryDetailsScreenRoute,
+                                      arguments: details);
+                                },
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                    color: purpleColor,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        "Record ${i + 1}",
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                        ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            "Record ${i + 1}",
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          Text(
+                                            DateFormat('dd MMMM, yyyy').format(
+                                                DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                        bills[i]["date"])),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        DateFormat('dd MMMM, yyyy').format(
-                                            DateTime.fromMillisecondsSinceEpoch(
-                                                bills[i]["date"])),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
+                                      // Text("13",
+                                      Row(
+                                        children: [
+                                          Text("\$${bills[i]["totalBill"]}",
+                                              style: const TextStyle(
+                                                  color: Colors.white)),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              SharedPreferences prefs =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              var user = prefs.getString(
+                                                  "currentUserEmail");
+                                              FirebaseFirestore.instance
+                                                  .collection("MultipleBills")
+                                                  .doc(user)
+                                                  .collection("myBills")
+                                                  .doc(docs[i])
+                                                  .delete();
+                                              getMyHistory();
+                                            },
+                                            child: Icon(
+                                              Icons.delete,
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     ],
                                   ),
-                                  // Text("13",
-                                  Text("\$${bills[i]["totalBill"]}",
-                                      style:
-                                          const TextStyle(color: Colors.white)),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                      ],
-                    )
+                          ],
+                        )
             ],
           ),
         ),

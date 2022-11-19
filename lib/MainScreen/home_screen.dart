@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -317,11 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             GestureDetector(
               onTap: () async {
-                Authentication().signOut();
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.clear();
-                Navigator.pushNamedAndRemoveUntil(
-                    context, loginScreenRoute, (route) => false);
+                dialogLogout(context: context);
               },
               child: const ListTile(
                 title: Text(
@@ -503,7 +501,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
             ],
@@ -511,5 +509,50 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  dialogLogout({context}) {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text(
+                "Are you sure you want to Logout?",
+                style: TextStyle(
+                  color: purpleColor,
+                  fontSize: 16,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: TextButton.styleFrom(backgroundColor: purpleColor),
+                  child: const Text(
+                    "No",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Authentication().signOut();
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.clear();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, loginScreenRoute, (route) => false);
+                  },
+                  style: TextButton.styleFrom(backgroundColor: purpleColor),
+                  child: const Text(
+                    "Yes",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ));
   }
 }
